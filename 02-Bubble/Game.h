@@ -5,8 +5,8 @@
 #include <GLFW/glfw3.h>
 #include "Scene.h"
 
-
-#define SCREEN_WIDTH 640
+//640 old
+#define SCREEN_WIDTH 820
 #define SCREEN_HEIGHT 480
 
 
