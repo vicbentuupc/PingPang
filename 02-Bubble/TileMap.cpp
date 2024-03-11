@@ -85,6 +85,8 @@ bool TileMap::loadLevel(const string &levelFile)
 			fin.get(tile);
 			if(tile == ' ')
 				map[j*mapSize.x+i] = 0;
+			else if(tile >= 'a' && tile <= 'z')
+				map[j * mapSize.x + i] = tile - int('a') + 10;
 			else
 				map[j*mapSize.x+i] = tile - int('0');
 		}
@@ -183,7 +185,7 @@ bool TileMap::collisionMoveRight(const glm::ivec2 &pos, const glm::ivec2 &size) 
 	return false;
 }
 
-bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY) const
+bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, int *posY, int mult) const
 {
 	int x0, x1, y;
 	
@@ -194,7 +196,7 @@ bool TileMap::collisionMoveDown(const glm::ivec2 &pos, const glm::ivec2 &size, i
 	{
 		if(map[y*mapSize.x+x] != 0)
 		{
-			if(*posY - tileSize * y + size.y <= 4)
+			if(*posY - tileSize * y + size.y <= 4 * mult)
 			{
 				*posY = tileSize * y - size.y;
 				return true;

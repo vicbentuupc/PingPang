@@ -1,6 +1,6 @@
 TILEMAP
 48 26 							-- Size of tile map in tiles x/y
-8 16 							-- Tile size & block size
+32 32  							-- Tile size & block size (ant: 8 16)
 images/pangblocks.png 	-- Tilesheet
 10 10							-- Number of tiles in tilesheet
 123232323232323232323232323232323232323232323231
@@ -11,14 +11,14 @@ images/pangblocks.png 	-- Tilesheet
 1               6              6               1
 1               7              7               1
 1               8              8               1
+1               9abc9abc9abc9abc               1
 1                                              1
 1                                              1
 1                                              1
 1                                              1
 1                                              1
 1                                              1
-1                                              1
-1                                              1
+1        4                            4        1
 1                                              1
 1                                              1
 1                                              1

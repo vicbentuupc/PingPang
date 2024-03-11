@@ -8,6 +8,7 @@
 #define JUMP_ANGLE_STEP 4
 #define JUMP_HEIGHT 96
 #define FALL_STEP 4
+#define CHAR_WIDTH 128
 
 
 enum PlayerAnims
@@ -48,33 +49,34 @@ void Player::init(const glm::ivec2 &tileMapPos, ShaderProgram &shaderProgram)
 
 void Player::init(const glm::ivec2& tileMapPos, ShaderProgram& shaderProgram)
 {
+	int mult = 2;
 	bJumping = false;
-	spritesheet.loadFromFile("images/pangplayer.png", TEXTURE_PIXEL_FORMAT_RGBA);
-	sprite = Sprite::createSprite(glm::ivec2(32, 32), glm::vec2(0.1, 0.1), &spritesheet, &shaderProgram);
+	spritesheet.loadFromFile("images/pangplayerprova.png", TEXTURE_PIXEL_FORMAT_RGBA);
+	sprite = Sprite::createSprite(glm::ivec2(CHAR_WIDTH, CHAR_WIDTH), glm::vec2(0.1*mult, 0.1 * mult), &spritesheet, &shaderProgram);
 	sprite->setNumberAnimations(4);
 
 	sprite->setAnimationSpeed(STAND_LEFT, 8);
-	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.1f, 0.2f));
+	sprite->addKeyframe(STAND_LEFT, glm::vec2(0.1f * mult, 0.2f * mult));
 
 	sprite->setAnimationSpeed(STAND_RIGHT, 8);
-	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f, 0.2f));
+	sprite->addKeyframe(STAND_RIGHT, glm::vec2(0.f * mult, 0.2f * mult));
 
 	sprite->setAnimationSpeed(MOVE_LEFT, 16);
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f, 0.1f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.1f, 0.1f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.2f, 0.1f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.3f, 0.1f));
-	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.4f, 0.1f));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.f * mult, 0.1f * mult));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.1f * mult, 0.1f * mult));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.2f * mult, 0.1f * mult));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.3f * mult, 0.1f * mult));
+	sprite->addKeyframe(MOVE_LEFT, glm::vec2(0.4f * mult, 0.1f * mult));
 
 
 
 
 	sprite->setAnimationSpeed(MOVE_RIGHT, 16);
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.f, 0.f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.1f, 0.f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.2f, 0.f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.3f, 0.f));
-	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.4f, 0.f));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.f * mult, 0.f * mult));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.1f * mult, 0.f * mult));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.2f * mult, 0.f * mult));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.3f * mult, 0.f * mult));
+	sprite->addKeyframe(MOVE_RIGHT, glm::vec2(0.4f * mult, 0.f * mult));
 
 
 	sprite->changeAnimation(0);
@@ -90,10 +92,10 @@ void Player::update(int deltaTime)
 	{
 		if(sprite->animation() != MOVE_LEFT)
 			sprite->changeAnimation(MOVE_LEFT);
-		posPlayer.x -= 2;
-		if(map->collisionMoveLeft(posPlayer, glm::ivec2(32, 32)))
+		posPlayer.x -= 2* CHAR_WIDTH / 32;
+		if(map->collisionMoveLeft(posPlayer, glm::ivec2(CHAR_WIDTH, CHAR_WIDTH)))
 		{
-			posPlayer.x += 2;
+			posPlayer.x += 2*CHAR_WIDTH/32;
 			sprite->changeAnimation(STAND_LEFT);
 		}
 	}
@@ -101,10 +103,10 @@ void Player::update(int deltaTime)
 	{
 		if(sprite->animation() != MOVE_RIGHT)
 			sprite->changeAnimation(MOVE_RIGHT);
-		posPlayer.x += 2;
-		if(map->collisionMoveRight(posPlayer, glm::ivec2(32, 32)))
+		posPlayer.x += 2* CHAR_WIDTH / 32;
+		if(map->collisionMoveRight(posPlayer, glm::ivec2(CHAR_WIDTH, CHAR_WIDTH)))
 		{
-			posPlayer.x -= 2;
+			posPlayer.x -= 2* CHAR_WIDTH / 32;
 			sprite->changeAnimation(STAND_RIGHT);
 		}
 	}
@@ -128,13 +130,13 @@ void Player::update(int deltaTime)
 		{
 			posPlayer.y = int(startY - 96 * sin(3.14159f * jumpAngle / 180.f));
 			if(jumpAngle > 90)
-				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y);
+				bJumping = !map->collisionMoveDown(posPlayer, glm::ivec2(CHAR_WIDTH, CHAR_WIDTH), &posPlayer.y, CHAR_WIDTH/32);
 		}
 	}
 	else
 	{
 		posPlayer.y += FALL_STEP;
-		if(map->collisionMoveDown(posPlayer, glm::ivec2(32, 32), &posPlayer.y))
+		if(map->collisionMoveDown(posPlayer, glm::ivec2(CHAR_WIDTH, CHAR_WIDTH), &posPlayer.y, CHAR_WIDTH/32))
 		{
 			if(Game::instance().getKey(GLFW_KEY_UP))
 			{
@@ -163,7 +165,3 @@ void Player::setPosition(const glm::vec2 &pos)
 	posPlayer = pos;
 	sprite->setPosition(glm::vec2(float(tileMapDispl.x + posPlayer.x), float(tileMapDispl.y + posPlayer.y)));
 }
-
-
-
-

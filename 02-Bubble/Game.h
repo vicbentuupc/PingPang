@@ -6,8 +6,8 @@
 #include "Scene.h"
 
 //640 old
-#define SCREEN_WIDTH 820
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 1640
+#define SCREEN_HEIGHT 960
 
 
 // Game is a singleton (a class with a single instance) that represents our whole application
